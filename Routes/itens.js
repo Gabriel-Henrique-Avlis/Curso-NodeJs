@@ -3,18 +3,20 @@ const router = express.Router();
 const Itens = require("../model/itens");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const config = require('../config/config')
+const config = require('../config/config');
+const { query } = require('express');
 
 //Funções Auxiliares
 const createUserToken = (userId) => {
     return jwt.sign({ id: userId }, config.jwt_pass, {expiresIn: config.jwt_expires_in });
 }
 
-router.get('/', async (req, res) => {
+router.get('/:categId', async (req, res) => {
     //Código refatorado com async/await
+    let categ = req.params.categId;
     try{
-        const itens = await Itens.find({});
-        return res.send(itens);
+        const itens = await Itens.find({categId: categ});
+        return res.status(201).send(itens);
     }
     catch (err){
         return res.status(500).send({error: "Erro na consulta de itens! "});
@@ -27,13 +29,13 @@ router.post('/create', async (req, res) => {
     if(!categId || !itemId || !description) return res.status(400).send({error: "Dados insuficientes! "});
 
     try{
-        if(await Itens.findOne({ description })) return res.status(400).send({ error:"Item já registrado!"})
+        if(await Itens.findOne({ categId, itemId })) return res.status(400).send({ error:"Item já registrado!"})
 
         const itens = await Itens.create(req.body);
         return res.status(201).send({itens});
     }
     catch(err){
-        return res.status(500).send({ error: 'Erro ao buscar item' });
+        return res.status(500).send({ error: 'Erro ao cadastrar item' });
     }
 })
 

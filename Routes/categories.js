@@ -47,11 +47,21 @@ router.put('/update', async (req, res) => {
             const categorie = await Categories.updateOne({categId: categId},{name: name});
             return res.status(201).send({categorie});
         }else {
-            return res.status(500).send({error: "Esta Categoria não existe"});
+            return res.status(500).send({error: 'Esta Categoria não existe' });
         }
     }
     catch(err){
         return res.status(500).send({ error: 'Erro ao alterar Categoria' });
+    }
+})
+
+router.delete('/delete/:categId', async (req, res) => {
+    try{
+            const categorie = await Categories.deleteOne({});
+            return res.status(201).send({categorie});
+    }
+    catch(err){
+        return res.status(500).send({ error: 'Erro ao excluir Categoria'})
     }
 })
 
