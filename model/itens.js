@@ -6,6 +6,7 @@ const ItemSchema = new Schema ({
     categId: { type: Number, required: true},
     itemId: { type: Number, required: true},
     description: { type: String, required: true},
+    expend: { type: Number, required: true },
     inserted: { type: Date, default: Date.now}
 });
 

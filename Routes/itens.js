@@ -24,9 +24,9 @@ router.get('/:categId', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-    const {categId, itemId, description} = req.body;
+    const {categId, itemId, expend, description} = req.body;
 
-    if(!categId || !itemId || !description) return res.status(400).send({error: "Dados insuficientes! "});
+    if(!categId || !itemId || !description || !expend) return res.status(400).send({error: "Dados insuficientes! "});
 
     try{
         if(await Itens.findOne({ categId, itemId })) return res.status(400).send({ error:"Item já registrado!"})
@@ -39,7 +39,7 @@ router.post('/create', async (req, res) => {
     }
 })
 
-router.post("/auth", async(req, res) => {
+/*router.post("/auth", async(req, res) => {
     const { email, password } = req.body;
 
     if(!email || !password) return res.status(400).send({ error: "Dados insuficientes!" });
@@ -59,7 +59,7 @@ router.post("/auth", async(req, res) => {
     catch(err){
         return res.status(500).send({ error: "Usuário não registrado!" });
     }
-})
+})*/
 
 module.exports = router;
 
